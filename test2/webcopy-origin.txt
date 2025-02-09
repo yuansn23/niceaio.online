@@ -1,0 +1,20 @@
+Uri: https://taplink.cc/6d08240912981460.webmanifest
+File Name: C:\Dowwwww\taplink.cc\6d08240912981460.webmanifest
+Content Type: application/manifest+json
+
+Uri: https://taplink.cc/andnbdsa234
+File Name: C:\Dowwwww\taplink.cc\andnbdsa234.html
+Content Type: text/html
+
+Uri: https://taplink.cc/s/css/frontend.css?1.2.9205
+File Name: C:\Dowwwww\taplink.cc\s\css\frontend.css
+Content Type: text/css
+
+Uri: https://taplink.cc/s/js/frontend.js?1.2.9205
+File Name: C:\Dowwwww\taplink.cc\s\js\frontend.js
+Content Type: application/javascript
+
+Uri: https://taplink.st/a/empty-avatar.png
+File Name: C:\Dowwwww\taplink.cc\a\empty-avatar.png
+Content Type: image/png
+
