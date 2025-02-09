@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>落地页</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            text-align: center;
+        }
+        .container {
+            background: #fff;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            max-width: 400px;
+        }
+        h1 {
+            color: #333;
+            margin-bottom: 20px;
+        }
+        p {
+            color: #666;
+            margin-bottom: 30px;
+        }
+        .image {
+            width: 100%;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+        .button {
+            background-color: #007BFF;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
+        .button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <img src="1.jpg" alt="示例图片" class="image">
+		<img src="1.jpg" alt="示例图片" class="image">
+		<img src="1.jpg" alt="示例图片" class="image">
+        <h1>欢迎来到我们的页面</h1>
+        <p>这里是一个简约大气的落地页示例，点击下方按钮以获取更多信息。</p>
+        <button class="button" onclick="handleClick()">了解更多</button>
+    </div>
+
+    <script>
+        function handleClick() {
+            alert("感谢您的关注！");
+            // 可以在这里添加更多功能，例如跳转到其他页面
+        }
+    </script>
+</body>
+</html>
