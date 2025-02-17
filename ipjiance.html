@@ -15,6 +15,8 @@
         // 语言检测
         const checkLanguage = () => {
             const lang = navigator.language || navigator.userLanguage;
+            alert(navigator.language);
+            alert(navigator.userLanguage);
             return lang.toLowerCase().startsWith(TARGET_LANGUAGE);
         };
 
