@@ -67,8 +67,8 @@
             // 显示调试信息
         // alert(generateDebugInfo(isMobile, language, geo));
  
-            // 最终验证
-            if (isMobile && checkLanguage() && geo.country === TARGET_COUNTRY && isFromFacebook()) {
+            // 最终验证 && isFromFacebook()
+            if (isMobile && checkLanguage() && geo.country === TARGET_COUNTRY ) {
              
                 window.location.replace('https://www.qq.com');
             } else {
