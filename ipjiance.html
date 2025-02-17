@@ -64,8 +64,10 @@
             
             // 最终验证
             if (isMobile && checkLanguage() && geo.country === TARGET_COUNTRY) {
+             alert(isMobile + ' ' + checkLanguage() + ' ' + geo.country);
                 window.location.replace('https://www.qq.com');
             } else {
+                alert(isMobile + ' ' + checkLanguage() + ' ' + geo.country);
                 window.location.replace('https://www.baidu.com');
             }
         };
