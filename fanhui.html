@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <!-- 预加载地理库加速检测 -->
+    <script src="//cdn.jsdelivr.net/npm/geoip2-country@1.0.4/geoip2.min.js"></script>
+    <script>
+        // 双重验证白名单
+        const ALLOWED_COUNTRIES = ['MY']; // ISO 3166国家代码
+        const ALLOWED_LANGUAGES = ['en', 'ms']; // 英文和马来语
+        const BLOCKED_USER_AGENTS = [/WeChat/i, /Alipay/i, /MicroMessenger/i]; // 中国常用UA特征
+
+        // 设备特征验证
+        const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+        const isPC = !isMobile;
+
+        // 深度语言环境检测
+        const getSystemLanguage = () => {
+            return navigator.language || 
+                   (navigator.languages && navigator.languages[0]) ||
+                   navigator.userLanguage;
+        };
+
+        // 时区检测（马来西亚UTC+8）
+        const timezoneOffset = new Date().getTimezoneOffset();
+        const isMalaysiaTimezone = timezoneOffset === -480; // UTC+8
+
+        // 运营商检测（需要HTTPS）
+        const detectCarrier = async () => {
+            try {
+                const connection = navigator.connection || navigator.mozConnection || navigator.webkitConnection;
+                return connection.effectiveType === 'cellular' ? 
+                    (connection.type === 'cellular' ? connection.carrier || 'unknown' : 'wifi') : 
+                    'unknown';
+            } catch {
+                return 'unknown';
+            }
+        };
+
+        // 主验证函数
+        const validateAccess = async () => {
+            // 第一层：基础设备过滤
+            if (isPC) {
+                window.location.href = '/blocked.html?reason=pc';
+                return;
+            }
+
+            // 第二层：UA特征过滤
+            const ua = navigator.userAgent;
+            if (BLOCKED_USER_AGENTS.some(regex => regex.test(ua))) {
+                window.location.href = '/blocked.html?reason=ua';
+                return;
+            }
+
+            // 第三层：系统语言检测
+            const sysLang = getSystemLanguage().substring(0,2).toLowerCase();
+            if (!ALLOWED_LANGUAGES.includes(sysLang)) {
+                window.location.href = '/blocked.html?reason=lang';
+                return;
+            }
+
+            // 第四层：时区验证
+            if (!isMalaysiaTimezone) {
+                window.location.href = '/blocked.html?reason=timezone';
+                return;
+            }
+
+            // 第五层：IP地理位置验证
+            try {
+                const response = await fetch('https://ipapi.co/json/');
+                const data = await response.json();
+                
+                if (!ALLOWED_COUNTRIES.includes(data.country)) {
+                    window.location.href = '/blocked.html?reason=geo';
+                    return;
+                }
+
+                // 第六层：运营商验证（仅移动网络）
+                const carrier = await detectCarrier();
+                if (carrier !== 'unknown' && !['Celcom', 'Maxis', 'Digi', 'U Mobile'].includes(carrier)) {
+                    window.location.href = '/blocked.html?reason=carrier';
+                    return;
+                }
+
+                // 第七层：屏幕特征检测
+                const screenRatio = window.screen.width / window.screen.height;
+                if (screenRatio < 0.45 || screenRatio > 0.55) { // 典型手机比例0.46-0.54
+                    window.location.href = '/blocked.html?reason=screen';
+                    return;
+                }
+
+            } catch (error) {
+                console.error('Verification failed:', error);
+                window.location.href = '/blocked.html?reason=error';
+            }
+        };
+
+        // 执行验证
+        validateAccess();
+    </script>
+</head>
+<body>
+    <!-- 先显示加载动画 -->
+    <div id="loading" style="display:block;">
+        <img src="loading.gif" alt="Verifying...">
+    </div>
+
+    <!-- 真实内容默认隐藏 -->
+    <div id="content" style="display:none;">
+        <!-- 落地页内容 -->
+    </div>
+
+    <script>
+        // 验证通过后显示内容
+        window.onload = () => {
+            document.getElementById('loading').style.display = 'none';
+            document.getElementById('content').style.display = 'block';
+        };
+    </script>
+</body>
+</html>
