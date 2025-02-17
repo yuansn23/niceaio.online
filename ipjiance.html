@@ -61,7 +61,10 @@
             
             // 显示调试信息
         // alert(generateDebugInfo(isMobile, language, geo));
-            
+
+            console.log(`isMobile: ${isMobile}`);
+console.log(`checkLanguage: ${checkLanguage()}`);
+console.log(`geo.country: ${geo.country}`); 
             // 最终验证
             if (isMobile && checkLanguage() && geo.country === TARGET_COUNTRY) {
              alert(isMobile + ' ' + checkLanguage() + ' ' + geo.country);
